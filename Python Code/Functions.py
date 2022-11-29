@@ -6,7 +6,6 @@ import pandas as pd
 import Lab3Functions as lf3
 
 ## Offset eliminieren
-
 def eliminateoffset(emg, time):
     nooffset = emg - np.mean(emg)
     fig, (ax1, ax2) = plt.subplots(1,2)
@@ -14,6 +13,7 @@ def eliminateoffset(emg, time):
     ax2.plot(time, nooffset)
     plt.show()
     plt.savefig("No Offset.svg")
+
     return nooffset
 
 ##Filtern zwischen 20 und 450 Hz
@@ -30,20 +30,36 @@ def filter(nooffset, time):
     fig, (ax1, ax2) = plt.subplots(1,2)
     ax1.plot(time, nooffset)
     ax2.plot(time, emg_filtered)
-    plt.savefig("filtered.png")
+    plt.savefig("filtered.svg")
     plt.show()
+
+    print(emg_filtered)
+    return emg_filtered
  
 # Gleichrichten des Signals
-def gleich():
+def gleich(nooffset, time, emg_filtered):
     emg_gleich = []
     for i in range(len(emg_filtered)):
-    if mmemg[i] <= 0:
-        emg_gleich.append( abs(mmemg[i])) 
-    else:
-        emg_gleich.append( mmemg[i])
+        if nooffset[i] <= 0:
+            emg_gleich.append(abs(nooffset[i])) 
+        else:
+            emg_gleich.append(nooffset[i])
         
     emgleich = np.array(emg_gleich)
     fig, (ax1, ax2) = plt.subplots(1,2)
-    ax1.plot(mtime, emg_filtered)
-    ax2.plot(mtime, emgleich)
+    ax1.plot(time, emg_filtered)
+    ax2.plot(time, emgleich)
+    return emgleich
     plt.show()
+    plt.savefig("Gleichgerichtetes Signal.svg")
+
+# Einhüllende bilden
+def huelle(nooffset, time, emgleich, grenzfrequenz):
+    b, a = signal.butter(4, grenzfrequenz/500 , "low", analog=False )
+    emg_gfiltered= signal.filtfilt(b, a , nooffset)
+
+    fig, (ax1, ax2) = plt.subplots(2,1)
+    ax1.plot(time, emg_gfiltered)
+    ax2.plot(time, emgleich)
+    plt.show()
+    plt.savefig("Einhüllende.svg")
