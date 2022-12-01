@@ -21,10 +21,10 @@ def eliminateoffset(emg, time):
 # Wn = 20 / (1000/2) bzw. 450 / (1000/2)
 
 def filter(nooffset, time):
-    b, a = signal.butter(4, 20/500 , "low", analog=False )
+    b, a = signal.butter(4, 20/100 , "low", analog=False )
     emg_filtered= signal.filtfilt(b, a , nooffset)
 
-    d, c = signal.butter(4, 450/500 , "high", analog=False )
+    d, c = signal.butter(4, 450/100 , "high", analog=False )
     emg_filtered= signal.filtfilt(d, c , nooffset)
 
     fig, (ax1, ax2) = plt.subplots(1,2)

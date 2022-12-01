@@ -138,7 +138,7 @@ def import_data(separator):
     for i in range(3):
         # create string for path
         weights_string = 'Weight' + str(i+1) + '.txt'
-        mvc_string = 'sMVC' + str(i+1) + '.txt'
+        mvc_string = 'MVC' + str(i+1) + '.txt'           #muss wieder geändert werden!
         fatigue_string = 'Fatigue' + str(i+1) + '.txt'
         
         weights_raw = weights_raw.append(pd.read_csv(
