@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 from scipy import fftpack
 from scipy import signal
 import matplotlib.pyplot as plt
@@ -62,3 +63,14 @@ def huelle(nooffset, time, emgleich, grenzfrequenz):
     #plt.show()
     #plt.savefig("Einhüllende.svg")
     return emg_gfiltered
+
+def freqfilt(power):
+    b, a = signal.butter(4, 40/500 , "low", analog=False )
+    power_filtered= signal.filtfilt(b, a , power)
+    return power_filtered
+
+def getmedian(power,frequencies):
+    area_freq= scipy.integrate.cumtrapz(power,frequencies, initial=0)
+    total_power=area_freq[-1]
+    median_freq= frequencies[np.where(area_freq >= total_power/2)[0][0]]
+    return median_freq
