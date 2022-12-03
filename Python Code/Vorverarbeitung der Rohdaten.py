@@ -65,6 +65,15 @@ print ('In Experiment 3 ergibt sich bei Duchgang 1 eine gemessene Muskelaktivier
 print ('In Experiment 3 ergibt sich bei Duchgang 2 eine gemessene Muskelaktivierung von '+str(round(fatigue_percentage[1]*100,2)) + ' % der maximalen willkürlichen Kontraktion' )
 print ('In Experiment 3 ergibt sich bei Duchgang 3 eine gemessene Muskelaktivierung von '+str(round(fatigue_percentage[2]*100,2)) + ' % der maximalen willkürlichen Kontraktion' )
 
+weights_kg=[2.5,5,7.5]
+
+plt.bar(weights_kg,weights_percentage*100)
+plt.xlabel("Weight (kg)")
+plt.ylabel("% of MVC")
+plt.xticks(weights_kg)
+plt.savefig('./Python Code/Plots/weights_mvc.svg')
+plt.show()
+
 burst1_start1=fatigue.t[fatigue_s[0]]+1000
 burst1_end1= burst1_start1+500
 burst1_start2= burst1_end1+7500
