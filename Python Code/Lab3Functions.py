@@ -43,7 +43,7 @@ def get_bursts(mvc_emg_filtered, weights_emg_filtered, fatigue_emg_filtered):
         plt.setp(plt.gca(), autoscale_on=True)
         plt.plot(x)
        
-        tellme('Click once to start zoom')
+        tellme('Click once to start zoom') 
         plt.waitforbuttonpress()
         
         while True:

@@ -56,10 +56,11 @@ def gleich(nooffset, time, emg_filtered):
 # Einhüllende bilden
 def huelle(nooffset, time, emgleich, grenzfrequenz):
     b, a = signal.butter(4, grenzfrequenz/500 , "low", analog=False )
-    emg_gfiltered= signal.filtfilt(b, a , nooffset)
+    emg_gfiltered= signal.filtfilt(b, a , emgleich)
 
     fig, (ax1, ax2) = plt.subplots(2,1)
     ax1.plot(time, emg_gfiltered)
     ax2.plot(time, emgleich)
     plt.show()
     plt.savefig("Einhüllende.svg")
+    return emg_gfiltered
