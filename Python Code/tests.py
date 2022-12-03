@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 from scipy import fftpack
 from scipy import signal
 import matplotlib.pyplot as plt
@@ -33,25 +34,29 @@ weights_e= [4992,10863,16734]
 fatigue_s= [875,8695,16550]
 fatigue_e= [6957,14847,22354]
 
-ind_s1=(np.abs(fatigue.t - 2300)).argmin
-ind_e1=(np.abs(fatigue.t - 2800)).argmin
-ind_s2=(np.abs(fatigue.t - 9200)).argmin
-ind_e2=(np.abs(fatigue.t - 9700)).argmin
-ind_s3=(np.abs(fatigue.t - 15500)).argmin
-ind_e3=(np.abs(fatigue.t - 16000)).argmin
 
-index_s1= int(ind_s1)
-index_e1= int(ind_e1)
-index_s2= int(ind_s2)
-index_e2= int(ind_e2)
-index_s3= int(ind_s3)
-index_e3= int(ind_e3)
+
+index_s1=np.argmin(np.abs(fatigue.t - 2500))
+index_e1=np.argmin(np.abs(fatigue.t - 3000))
+index_s2=np.argmin(np.abs(fatigue.t - 9200))
+index_e2=np.argmin(np.abs(fatigue.t - 9700))
+index_s3=np.argmin(np.abs(fatigue.t - 15500))
+index_e3=np.argmin(np.abs(fatigue.t - 16000))
+
 
 start_isolated= fatigue_filtered[index_s1:index_e1]
 middle_isolated= fatigue_filtered[index_s2:index_e2]
 end_isolated= fatigue_filtered[index_s3:index_e3]
 
-plt.plot(fatigue.t,fatigue_filtered)
-plt.plot(start_isolated,fatigue.t[index_s1:index_e1],color='red')
-plt.plot(middle_isolated,fatigue.t[index_s2:index_e2],color='red')
-plt.plot(end_isolated,fatigue.t[index_s3:index_e3],color='red')
+
+power,frequencies=lf3.get_power(middle_isolated,1000)
+
+b, a = signal.butter(4, 40/500 , "low", analog=False )
+power_filtered=signal.filtfilt(b,a,power)
+area_freq= scipy.integrate.cumtrapz(power,frequencies, initial=0)
+total_power=area_freq[-1]
+median_freq= frequencies[np.where(area_freq >= total_power/2)[0][0]]
+plt.plot(frequencies,power)
+plt.plot(frequencies,power_filtered,color='red')
+plt.axvline(x=median_freq)
+plt.show()
