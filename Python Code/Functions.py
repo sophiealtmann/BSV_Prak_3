@@ -52,6 +52,7 @@ def gleich(nooffset, time, emg_filtered):
     #plt.show()
     #plt.savefig("Gleichgerichtetes Signal.svg")
     return emgleich
+
 # Einhüllende bilden
 def huelle(nooffset, time, emgleich, grenzfrequenz):
     b, a = signal.butter(4, grenzfrequenz/500 , "low", analog=False )
@@ -64,11 +65,13 @@ def huelle(nooffset, time, emgleich, grenzfrequenz):
     #plt.savefig("Einhüllende.svg")
     return emg_gfiltered
 
+# Filter für das Frequenzspektrum
 def freqfilt(power):
     b, a = signal.butter(4, 40/500 , "low", analog=False )
     power_filtered= signal.filtfilt(b, a , power)
     return power_filtered
 
+# Berechnung des Medians
 def getmedian(power,frequencies):
     area_freq= scipy.integrate.cumtrapz(power,frequencies, initial=0)
     total_power=area_freq[-1]
